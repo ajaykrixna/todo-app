@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import TodoForm from './TodoForm';
+import TodoList from './TodoList';
 
 
 function App(){
@@ -13,16 +14,9 @@ function App(){
   return <div>
 
     <TodoForm addTodo={addTodo}/>
-    
-    <ul>
-      {todos.map((item,index)=> <div key={index}>
-        <h3>{item.title}</h3>
-        <p>{item.description}</p>
-        <p>{item.dueDate}</p>
-        <p>{item.priority}</p>
-      </div>
-    )}
-    </ul>
+
+    <TodoList todos={todos}/>
+
     
   </div>
 }
