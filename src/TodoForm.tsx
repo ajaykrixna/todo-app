@@ -1,12 +1,23 @@
 import {useState} from "react";
 
-function TodoForm(){
+function TodoForm(props){
   const[title,setTitle]= useState("")
   const[description,setDescription]=useState("")
   const[dueDate,setDueDate]=useState("")
   const[priority,setPriority]=useState("");
 
-return <form>
+  function handleSubmit(e){
+    e.preventDefault();
+    const newTodo={title:title, description:description, dueDate:dueDate, priority:priority}
+    props.addTodo(newTodo)
+    setTitle("")
+    setDescription("")
+    setDueDate("")
+    setPriority("")
+    }
+
+
+return <form onSubmit={handleSubmit}>
     <h2>Add Todo</h2>
     <div>
     <input value={title} placeholder="Add title" onChange={(e)=>setTitle(e.target.value)}/>
@@ -29,4 +40,7 @@ return <form>
 </form>
 }
 
+
 export default TodoForm;
+
+
