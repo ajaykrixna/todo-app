@@ -6,6 +6,7 @@ function TodoList(props){
         <p>{item.dueDate}</p>
         <p>{item.priority}</p>
         <button onClick={() => props.deleteTodo(index)}>Delete</button>
+        <button onClick={() => props.editTodo(item)}>Edit</button>
       </div>  
     )
 }

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 function TodoForm(props){
   const[title,setTitle]= useState("")
@@ -6,10 +6,26 @@ function TodoForm(props){
   const[dueDate,setDueDate]=useState("")
   const[priority,setPriority]=useState("");
 
+  useEffect(()=>{
+    if(props.editingTodo){
+        setTitle(props.editingTodo.title)
+        setDescription(props.editingTodo.description)
+        setDueDate(props.editingTodo.dueDate)
+        setPriority(props.editingTodo.priority)
+    }
+  },
+    [props.editingTodo]
+  )
+
   function handleSubmit(e){
     e.preventDefault();
     const newTodo={title:title, description:description, dueDate:dueDate, priority:priority}
-    props.addTodo(newTodo)
+    if(props.editingTodo){
+        props.updateTodo(newTodo)
+    }
+    else{
+        props.addTodo(newTodo)
+    }
     setTitle("")
     setDescription("")
     setDueDate("")
