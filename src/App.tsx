@@ -11,11 +11,18 @@ function App(){
     setTodos([...todos, newtodo])
   }
 
+  function deleteTodo(clickedIndex){
+    setTodos(todos.filter((item, index) => index !== clickedIndex));
+  }
+
   return <div>
 
     <TodoForm addTodo={addTodo}/>
 
-    <TodoList todos={todos}/>
+    <TodoList 
+    todos={todos}
+    deleteTodo={deleteTodo}
+    />
 
     
   </div>

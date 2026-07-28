@@ -5,8 +5,10 @@ function TodoList(props){
         <p>{item.description}</p>
         <p>{item.dueDate}</p>
         <p>{item.priority}</p>
-      </div>
+        <button onClick={() => props.deleteTodo(index)}>Delete</button>
+      </div>  
     )
 }
+
 
 export default TodoList;
