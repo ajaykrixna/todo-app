@@ -18,7 +18,11 @@ class TodoRepository:
     def get_by_id(self, todo_id: int):
         return self.db.query(Todo).filter(Todo.id == todo_id).first()
 
+    def update(self, todo: Todo):
+        self.db.commit()
+        self.db.refresh(todo)
+        return todo
+
     def delete(self, todo: Todo):
         self.db.delete(todo)
         self.db.commit()
-

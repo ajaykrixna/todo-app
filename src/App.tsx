@@ -1,54 +1,70 @@
-import {useState} from 'react';
-import TodoForm from './TodoForm';
-import TodoList from './TodoList';
+import { useState, useEffect } from "react";
+import TodoForm from "./TodoForm";
+import TodoList from "./TodoList";
 
+function App() {
+  const [todos, setTodos] = useState([]);
+  const [editingTodo, setEditingTodo] = useState(null);
 
-function App(){
-
-  const[todos, setTodos] = useState([]);
-  const[editingTodo,setEditingTodo] = useState(null);
-
-  function addTodo(newtodo){
-    setTodos([...todos, newtodo])
+  async function fetchTodos() {
+    const response = await fetch("http://localhost:8000/todos/");
+    const data = await response.json();
+    setTodos(data);
   }
 
-  function deleteTodo(clickedIndex){
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  async function addTodo(newTodo) {
+    const response = await fetch("http://localhost:8000/todos/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newTodo),
+    });
+
+    const todo = await response.json();
+
+    setTodos([...todos, todo]);
+  }
+
+  function deleteTodo(clickedIndex) {
     setTodos(todos.filter((item, index) => index !== clickedIndex));
   }
 
-  function editTodo(todo){
+  function editTodo(todo) {
     setEditingTodo(todo);
   }
 
-  function updateTodo(updatedTodo){
-    const newArray = todos.map((item, index) => {
-      if(item === editingTodo){
+  function updateTodo(updatedTodo) {
+    const newArray = todos.map((item) => {
+      if (item === editingTodo) {
         return updatedTodo;
       }
-      else{
-        return item;
-      }
+      return item;
     });
+
     setTodos(newArray);
     setEditingTodo(null);
   }
 
+  return (
+    <div>
+      <TodoForm
+        addTodo={addTodo}
+        editingTodo={editingTodo}
+        updateTodo={updateTodo}
+      />
 
-  return <div>
-
-    <TodoForm addTodo={addTodo}
-    editingTodo={editingTodo}
-    updateTodo={updateTodo}
-    />
-
-    <TodoList 
-    todos={todos}
-    deleteTodo={deleteTodo}
-    editTodo={editTodo}
-    />
-
-    
-  </div>
+      <TodoList
+        todos={todos}
+        deleteTodo={deleteTodo}
+        editTodo={editTodo}
+      />
+    </div>
+  );
 }
 
 export default App;
