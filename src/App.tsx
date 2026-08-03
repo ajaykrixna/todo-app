@@ -30,18 +30,35 @@ function App() {
     setTodos([...todos, todo]);
   }
 
-  function deleteTodo(clickedIndex) {
-    setTodos(todos.filter((item, index) => index !== clickedIndex));
+  async function deleteTodo(todoId) {
+    await fetch(`http://localhost:8000/todos/${todoId}`, {
+      method: "DELETE",
+    });
+
+    setTodos(todos.filter((item) => item.id !== todoId));
   }
 
   function editTodo(todo) {
     setEditingTodo(todo);
   }
 
-  function updateTodo(updatedTodo) {
+  async function updateTodo(updatedTodo) {
+    const response = await fetch(
+      `http://localhost:8000/todos/${editingTodo.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedTodo),
+      }
+    );
+
+    const todo = await response.json();
+
     const newArray = todos.map((item) => {
-      if (item === editingTodo) {
-        return updatedTodo;
+      if (item.id === todo.id) {
+        return todo;
       }
       return item;
     });

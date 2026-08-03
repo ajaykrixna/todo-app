@@ -7,12 +7,14 @@ function TodoForm(props) {
   const [priority, setPriority] = useState("Low");
 
   useEffect(() => {
-    if (props.editingTodo) {
-      setTitle(props.editingTodo.title);
-      setDescription(props.editingTodo.description);
-      setDueDate(props.editingTodo.dueDate || "");
-      setPriority(props.editingTodo.priority || "Low");
-    }
+  console.log(props.editingTodo);
+
+  if (props.editingTodo) {
+    setTitle(props.editingTodo.title);
+    setDescription(props.editingTodo.description);
+    setDueDate(props.editingTodo.dueDate || "");
+    setPriority(props.editingTodo.priority || "Low");
+  }
   }, [props.editingTodo]);
 
   function handleSubmit(e) {
@@ -35,6 +37,7 @@ function TodoForm(props) {
     setDueDate("");
     setPriority("Low");
   }
+  
 
   return (
     <form onSubmit={handleSubmit}>
